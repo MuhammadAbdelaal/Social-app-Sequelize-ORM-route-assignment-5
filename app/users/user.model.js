@@ -8,7 +8,7 @@ function checkNameLength(user) {
   }
 }
 
-// defining the user model
+// defining the user model with "define" method
 const User = sequelize.define(
   "user",
   {
@@ -46,6 +46,7 @@ const User = sequelize.define(
       type: DataTypes.ENUM,
       values: ["admin", "user"],
       defaultValue: "user",
+      allowNull: false,
     },
   },
   {

@@ -3,8 +3,11 @@ const app = express();
 const port = 3000;
 const sequelize = require("./common/db/connection");
 const User = require("./users/user.model");
+const Post = require("./posts/post.model");
 
 // sequelize.sync({});
+// sequelize.sync({ alter: true });
+
 // app.get("/", async (req, res) => {
 //   try {
 //     await sequelize.authenticate();
