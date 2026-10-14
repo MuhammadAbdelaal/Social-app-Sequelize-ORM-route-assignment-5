@@ -2,11 +2,7 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const sequelize = require("./common/db/connection");
-const User = require("./users/user.model");
-const Post = require("./posts/post.model");
-
-// sequelize.sync({});
-// sequelize.sync({ alter: true });
+require("./common/db/associations");
 
 // app.get("/", async (req, res) => {
 //   try {
@@ -18,6 +14,12 @@ const Post = require("./posts/post.model");
 //   }
 // });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+async function startServer() {
+  await sequelize.sync(); // sync the database first, then start the server
+  // sequelize.sync({ alter: true });
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+  });
+}
+
+startServer();
