@@ -4,7 +4,9 @@ const sequelize = require("../common/db/connection");
 // custom hook to check name length
 function checkNameLength(user) {
   if (user.name.length <= 2) {
-    throw new Error("Name must be at least 3 characters.");
+    const error = new Error("Name must be at least 3 characters.");
+    error.statusCode = 400;
+    throw error;
   }
 }
 
@@ -22,7 +24,7 @@ const User = sequelize.define(
       unique: true,
       validate: {
         // built-in email validation
-        isEmail: true,
+        isEmail: { msg: "Invalid Email format." },
       },
     },
     password: {
