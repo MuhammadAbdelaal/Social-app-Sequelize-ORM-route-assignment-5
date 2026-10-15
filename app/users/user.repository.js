@@ -11,7 +11,13 @@ async function getUserByEmail(email) {
   return await User.findOne({ where: { email } });
 }
 
+// create or update a user using skip validation option
+async function createOrUpdateUser(userData) {
+  return await User.upsert(userData, { validate: false });
+}
+
 module.exports = {
   createUser,
   getUserByEmail,
+  createOrUpdateUser,
 };

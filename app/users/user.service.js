@@ -12,7 +12,18 @@ async function createUser({ name, email, password, role }) {
   // if not, create user and return its data
   return await userRepository.createUser({ name, email, password, role });
 }
+// create or update based on PK (id) - skip validation
+async function createOrUpdateUser({ id, name, email, password, role }) {
+  return await userRepository.createOrUpdateUser({
+    id,
+    name,
+    email,
+    password,
+    role,
+  });
+}
 
 module.exports = {
   createUser,
+  createOrUpdateUser,
 };
