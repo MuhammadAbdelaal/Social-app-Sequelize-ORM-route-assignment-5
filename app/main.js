@@ -7,9 +7,8 @@ const userRouter = require("./users/user.route");
 
 app.use(express.json()); // parse JSON request body
 
-// user routes
+// users routes
 app.use("/users", userRouter);
-
 // post routes
 
 async function startServer() {

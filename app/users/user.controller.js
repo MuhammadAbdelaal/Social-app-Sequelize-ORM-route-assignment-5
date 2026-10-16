@@ -8,18 +8,13 @@ async function createUser(req, res, next) {
       return res.status(400).json({ message: "Missing required fields." });
     }
     // call the service to create user
-    const createdUser = await userService.createUser({
+    await userService.createUser({
       name,
       email,
       password,
       role,
     });
-    // convert userData to JSON to delete password
-    const userData = createdUser.toJSON();
-    delete userData.password;
-    res
-      .status(201)
-      .json({ message: "User added successfully.", user: userData });
+    return res.status(201).json({ message: "User added successfully." });
   } catch (error) {
     // if error because of internal validations
     if (error.name === "SequelizeValidationError") {
@@ -51,7 +46,19 @@ async function createOrUpdateUser(req, res, next) {
   }
 }
 
+// get user by email
+async function getUserByEmail(req, res, next) {
+  const { email } = req.query;
+  try {
+    const user = await userService.getUserByEmail(email);
+    res.status(200).json({ user: user });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   createUser,
   createOrUpdateUser,
+  getUserByEmail,
 };

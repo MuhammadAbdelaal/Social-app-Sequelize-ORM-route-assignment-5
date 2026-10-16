@@ -8,7 +8,8 @@ async function createUser({ name, email, password, role }) {
 }
 
 async function getUserByEmail(email) {
-  return await User.findOne({ where: { email } });
+  const user = await User.findOne({ where: { email } });
+  return user;
 }
 
 // create or update a user using skip validation option
