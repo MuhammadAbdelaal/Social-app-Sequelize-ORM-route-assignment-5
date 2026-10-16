@@ -7,9 +7,12 @@ async function createUser({ name, email, password, role }) {
   return user;
 }
 
+// get user by email excluding the password attribute
 async function getUserByEmail(email) {
-  const user = await User.findOne({ where: { email } });
-  return user;
+  return await User.findOne({
+    where: { email },
+    attributes: { exclude: ["password"] },
+  });
 }
 
 // create or update a user using skip validation option
@@ -17,8 +20,16 @@ async function createOrUpdateUser(userData) {
   return await User.upsert(userData, { validate: false });
 }
 
+// get user by PK (id) excluding the password and role
+async function getUserByPk(id) {
+  return await User.findByPk(id, {
+    attributes: { exclude: ["role", "password"] },
+  });
+}
+
 module.exports = {
   createUser,
   getUserByEmail,
   createOrUpdateUser,
+  getUserByPk,
 };

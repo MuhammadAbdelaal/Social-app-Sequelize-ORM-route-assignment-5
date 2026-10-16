@@ -11,4 +11,7 @@ userRouter.put("/:id", userController.createOrUpdateUser);
 // get user by email (query param)
 userRouter.get("/by-email", userController.getUserByEmail);
 
+// get user by id (param)
+userRouter.get("/:id", userController.getUserById);
+
 module.exports = userRouter;

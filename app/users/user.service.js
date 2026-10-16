@@ -23,7 +23,7 @@ async function createOrUpdateUser({ id, name, email, password, role }) {
   });
 }
 
-// get user by email and delete password before returning
+// get user by email (password excluded)
 async function getUserByEmail(email) {
   const user = await userRepository.getUserByEmail(email);
   if (!user) {
@@ -31,15 +31,23 @@ async function getUserByEmail(email) {
     error.statusCode = 404;
     throw error;
   }
-  // delete password from user data
-  // convert the user sequelize instance to object to be able to modify it
-  const userData = user.toJSON();
-  delete userData.password; // then delete the password field
-  return userData;
+  return user;
+}
+
+// get user by PK (id) (role and password excluded)
+async function getUserById(id) {
+  const user = await userRepository.getUserByPk(id);
+  if (!user) {
+    const error = new Error("no user found.");
+    error.statusCode = 404;
+    throw error;
+  }
+  return user;
 }
 
 module.exports = {
   createUser,
   createOrUpdateUser,
   getUserByEmail,
+  getUserById,
 };

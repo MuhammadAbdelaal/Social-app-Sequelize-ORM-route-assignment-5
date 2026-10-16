@@ -46,12 +46,29 @@ async function createOrUpdateUser(req, res, next) {
   }
 }
 
-// get user by email
+// get user by email (password excluded)
 async function getUserByEmail(req, res, next) {
   const { email } = req.query;
+  if (!email) {
+    // check if email is exist in query params first
+    return res
+      .status(400)
+      .json({ message: "Email query parameter is required." });
+  }
   try {
     const user = await userService.getUserByEmail(email);
     res.status(200).json({ user: user });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
+  }
+}
+
+// get user by PK (id) (role and password excluded)
+async function getUserById(req, res, next) {
+  const { id } = req.params;
+  try {
+    const user = await userService.getUserById(id);
+    res.status(200).json(user);
   } catch (error) {
     return res.status(error.statusCode || 500).json({ message: error.message });
   }
@@ -61,4 +78,5 @@ module.exports = {
   createUser,
   createOrUpdateUser,
   getUserByEmail,
+  getUserById,
 };
