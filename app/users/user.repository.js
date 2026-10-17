@@ -27,9 +27,15 @@ async function getUserByPk(id) {
   });
 }
 
+// get user by id -> nothing excluded from the returned user data
+async function getUserById(id) {
+  return await User.findByPk(id);
+}
+
 module.exports = {
   createUser,
   getUserByEmail,
   createOrUpdateUser,
   getUserByPk,
+  getUserById,
 };

@@ -3,7 +3,7 @@ const userService = require("./user.service");
 async function createUser(req, res, next) {
   try {
     // get user data from body, make sure it has all the required fields
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role } = req.body || {};
     if (!name || !email || !password) {
       return res.status(400).json({ message: "Missing required fields." });
     }
@@ -28,7 +28,7 @@ async function createUser(req, res, next) {
 async function createOrUpdateUser(req, res, next) {
   try {
     const id = req.params.id;
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role } = req.body || {};
     // call the service to create or update user
     const [, created] = await userService.createOrUpdateUser({
       id,
