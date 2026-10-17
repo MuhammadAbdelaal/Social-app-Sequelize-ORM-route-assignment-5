@@ -47,8 +47,19 @@ async function getAllPostsWithDetails(req, res, next) {
   }
 }
 
+// get all posts, and count the number of comments for each post
+async function getAllPostsWithCommentsCount(req, res, next) {
+  try {
+    const posts = await postService.getAllPostsWithCommentsCount();
+    return res.status(200).json(posts);
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   createPost,
   deletePost,
   getAllPostsWithDetails,
+  getAllPostsWithCommentsCount,
 };

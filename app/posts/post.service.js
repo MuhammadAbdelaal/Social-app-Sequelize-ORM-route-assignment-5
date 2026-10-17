@@ -1,5 +1,6 @@
 const postRepository = require("./post.repository");
 const userRepository = require("../users/user.repository");
+const { get } = require("./post.route");
 
 // create post based on user id
 async function createPost({ title, content, userId }) {
@@ -39,8 +40,14 @@ async function getAllPostsWithDetails() {
   return await postRepository.getAllPostsWithDetails();
 }
 
+// get all posts, and count the number of comments for each post
+async function getAllPostsWithCommentsCount() {
+  return await postRepository.getAllPostsWithCommentsCount();
+}
+
 module.exports = {
   createPost,
   deletePostById,
   getAllPostsWithDetails,
+  getAllPostsWithCommentsCount,
 };

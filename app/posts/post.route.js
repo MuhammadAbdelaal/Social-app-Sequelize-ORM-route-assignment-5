@@ -12,4 +12,7 @@ postRouter.delete("/:postId", postController.deletePost);
 // get all posts, including their owner (user) and their comments
 postRouter.get("/details", postController.getAllPostsWithDetails);
 
+// get all posts, and count the number of comments for each post
+postRouter.get("/comments-count", postController.getAllPostsWithCommentsCount);
+
 module.exports = postRouter;

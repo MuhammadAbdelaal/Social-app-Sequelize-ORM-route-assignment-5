@@ -1,6 +1,7 @@
 const Post = require("./post.model");
 const Comment = require("../comments/comment.model");
 const User = require("../users/user.model");
+const Sequelize = require("sequelize");
 
 // create post based on user id
 async function createPost({ title, content, userId }) {
@@ -31,9 +32,27 @@ async function getAllPostsWithDetails() {
   return posts;
 }
 
+// get all posts, and count the number of comments for each post
+async function getAllPostsWithCommentsCount() {
+  const posts = await Post.findAll({
+    attributes: [
+      "id",
+      "title",
+      [Sequelize.fn("COUNT", Sequelize.col("comments.id")), "commentsCount"],
+    ],
+    include: {
+      model: Comment,
+      attributes: [],
+    },
+    group: ["post.id"],
+  });
+  return posts;
+}
+
 module.exports = {
   createPost,
   deletePostById,
   getPostById,
   getAllPostsWithDetails,
+  getAllPostsWithCommentsCount,
 };
