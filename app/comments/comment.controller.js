@@ -18,6 +18,32 @@ async function createBulkComments(req, res, next) {
   }
 }
 
+// update a comment by its id (only by its owner)
+async function updateCommentById(req, res, next) {
+  const { commentId: id } = req.params;
+  // check if id is an integer after converting it to number
+  if (!Number.isInteger(Number(id))) {
+    return res.status(400).json({ message: "CommentId must be an integer." });
+  }
+
+  const { content, userId } = req.body || {};
+
+  // if userId or content is not provided, return error
+  if (!Number.isInteger(userId) || !content) {
+    return res
+      .status(400)
+      .json({ message: "An integer userId and a content are required." });
+  }
+  // call the service to update the comment
+  try {
+    await commentService.updateCommentById(id, content, userId);
+    return res.status(200).json({ message: "Comment updated." });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   createBulkComments,
+  updateCommentById,
 };
