@@ -15,6 +15,26 @@ async function createPost({ title, content, userId }) {
   return post;
 }
 
+// delete post by its id (only by its owner)
+async function deletePostById(id, userId) {
+  // check if the post exists
+  const post = await postRepository.getPostById(id);
+  if (!post) {
+    const error = new Error("Post not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+  // check if the user is the owner of the post
+  if (post.userId !== userId) {
+    const error = new Error("You are not authorized to delete this post.");
+    error.statusCode = 403;
+    throw error;
+  }
+  // delete the post
+  await postRepository.deletePostById(id);
+}
+
 module.exports = {
   createPost,
+  deletePostById,
 };
