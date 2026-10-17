@@ -34,7 +34,13 @@ async function deletePostById(id, userId) {
   await postRepository.deletePostById(id);
 }
 
+// get all posts, including their owner (user) and their comments
+async function getAllPostsWithDetails() {
+  return await postRepository.getAllPostsWithDetails();
+}
+
 module.exports = {
   createPost,
   deletePostById,
+  getAllPostsWithDetails,
 };

@@ -37,7 +37,18 @@ async function deletePost(req, res, next) {
   }
 }
 
+// get all posts, including their owner (user) and their comments
+async function getAllPostsWithDetails(req, res, next) {
+  try {
+    const posts = await postService.getAllPostsWithDetails();
+    return res.status(200).json(posts);
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   createPost,
   deletePost,
+  getAllPostsWithDetails,
 };
