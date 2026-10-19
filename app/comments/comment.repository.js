@@ -1,5 +1,7 @@
 const Comment = require("./comment.model");
 const Sequelize = require("sequelize");
+const User = require("../users/user.model");
+const Post = require("../posts/post.model");
 
 // create bulk comments
 async function createBulkComments(comments) {
@@ -32,10 +34,39 @@ async function getCommentsByWord(word) {
   });
 }
 
+// Retrieve the 3 most recent comments for a specific post, ordered by creation date
+async function getRecentCommentsForPost(postId) {
+  return await Comment.findAll({
+    where: { postId },
+    order: [["createdAt", "DESC"]],
+    limit: 3,
+    attributes: ["id", "content", "createdAt"],
+  });
+}
+
+// Get Specific Comment By PK with User and Post Information.
+async function getCommentDetailsByPk(id) {
+  return await Comment.findByPk(id, {
+    attributes: ["id", "content"],
+    include: [
+      {
+        model: User,
+        attributes: ["id", "name", "email"],
+      },
+      {
+        model: Post,
+        attributes: ["id", "title", "content"],
+      },
+    ],
+  });
+}
+
 module.exports = {
   createBulkComments,
   updateCommentById,
   getCommentById,
   findOrCreateComment,
   getCommentsByWord,
+  getRecentCommentsForPost,
+  getCommentDetailsByPk,
 };
