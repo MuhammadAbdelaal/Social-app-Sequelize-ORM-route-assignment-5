@@ -24,7 +24,19 @@ async function updateCommentById(id, content, userId) {
   return await commentRepository.updateCommentById(id, content, userId);
 }
 
+// find or create a comment by postId, userId, and content
+async function findOrCreateComment(postId, userId, content) {
+  const [comment, created] = await commentRepository.findOrCreateComment(
+    postId,
+    userId,
+    content,
+  );
+
+  return { comment, created };
+}
+
 module.exports = {
   createBulkComments,
   updateCommentById,
+  findOrCreateComment,
 };

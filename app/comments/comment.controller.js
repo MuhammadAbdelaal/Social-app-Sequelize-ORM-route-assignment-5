@@ -43,7 +43,27 @@ async function updateCommentById(req, res, next) {
   }
 }
 
+// find or create a comment by postId, userId, and content
+async function findOrCreateComment(req, res, next) {
+  const { postId, userId, content } = req.body || {};
+  // check if postId, userId, and content are provided
+  if (!postId || !userId || !content) {
+    return res.status(400).json({ message: "Missing required fields." });
+  }
+  try {
+    const result = await commentService.findOrCreateComment(
+      postId,
+      userId,
+      content,
+    );
+    return res.status(result.created ? 201 : 200).json(result);
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   createBulkComments,
   updateCommentById,
+  findOrCreateComment,
 };

@@ -19,6 +19,11 @@ app.use("/posts", postRouter);
 // comments routes
 app.use("/comments", commentRouter);
 
+// global error handler for all routes
+app.use((err, req, res, next) => {
+  res.status(err.statusCode).json({ message: err.message });
+});
+
 async function startServer() {
   await sequelize.sync(); // sync the database first, then start the server
   app.listen(port, () => {

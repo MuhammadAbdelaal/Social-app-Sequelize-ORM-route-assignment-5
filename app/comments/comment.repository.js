@@ -15,8 +15,14 @@ async function getCommentById(id) {
   return await Comment.findByPk(id);
 }
 
+// find or create a comment by postId, userId, and content
+async function findOrCreateComment(postId, userId, content) {
+  return await Comment.findOrCreate({ where: { postId, userId, content } });
+}
+
 module.exports = {
   createBulkComments,
   updateCommentById,
   getCommentById,
+  findOrCreateComment,
 };
