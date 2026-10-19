@@ -79,9 +79,41 @@ async function getCommentsByWord(req, res, next) {
   }
 }
 
+// get recent comments for a specific post
+async function getRecentCommentsForPost(req, res, next) {
+  const { postId } = req.params;
+  // if postId is a number, return error
+  if (!Number.isInteger(Number(postId))) {
+    return res.status(400).json({ message: "PostId must be an integer." });
+  }
+  try {
+    const comments = await commentService.getRecentCommentsForPost(postId);
+    return res.status(200).json(comments);
+  } catch (error) {
+    next(error);
+  }
+}
+
+// get comment details by PK
+async function getCommentDetailsByPk(req, res, next) {
+  const { id } = req.params;
+  // if id is not a number
+  if (!Number.isInteger(Number(id))) {
+    return res.status(400).json({ message: "Comment Id must be a number." });
+  }
+  try {
+    const comment = await commentService.getCommentDetailsByPk(id);
+    return res.status(200).json(comment);
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   createBulkComments,
   updateCommentById,
   findOrCreateComment,
   getCommentsByWord,
+  getRecentCommentsForPost,
+  getCommentDetailsByPk,
 };

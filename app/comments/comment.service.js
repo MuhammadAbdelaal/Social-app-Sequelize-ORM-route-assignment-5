@@ -47,9 +47,27 @@ async function getCommentsByWord(word) {
   return { count, comments: rows };
 }
 
+// get recent comments for a specific post
+async function getRecentCommentsForPost(postId) {
+  return await commentRepository.getRecentCommentsForPost(postId);
+}
+
+// Get Specific Comment By PK with User and Post Information.
+async function getCommentDetailsByPk(id) {
+  const comment = await commentRepository.getCommentDetailsByPk(id);
+  if (!comment) {
+    const error = new Error("no comment found.");
+    error.statusCode = 404;
+    throw error;
+  }
+  return comment;
+}
+
 module.exports = {
   createBulkComments,
   updateCommentById,
   findOrCreateComment,
   getCommentsByWord,
+  getRecentCommentsForPost,
+  getCommentDetailsByPk,
 };

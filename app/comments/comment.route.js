@@ -8,4 +8,12 @@ commentRouter.patch("/:commentId", commentController.updateCommentById); // upda
 commentRouter.post("/find-or-create", commentController.findOrCreateComment); // find or create comment
 commentRouter.get("/search", commentController.getCommentsByWord); // get comments by word
 
+// get recent comments for a specific post
+commentRouter.get(
+  "/newest/:postId",
+  commentController.getRecentCommentsForPost,
+);
+
+// get comment details by PK
+commentRouter.get("/:id", commentController.getCommentDetailsByPk);
 module.exports = commentRouter;
