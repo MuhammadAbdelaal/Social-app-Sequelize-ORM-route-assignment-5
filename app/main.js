@@ -21,7 +21,7 @@ app.use("/comments", commentRouter);
 
 // global error handler for all routes
 app.use((err, req, res, next) => {
-  res.status(err.statusCode).json({ message: err.message });
+  res.status(err.statusCode || 500).json({ message: err.message });
 });
 
 async function startServer() {

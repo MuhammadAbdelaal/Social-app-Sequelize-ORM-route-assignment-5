@@ -62,8 +62,26 @@ async function findOrCreateComment(req, res, next) {
   }
 }
 
+// get comments by word
+async function getCommentsByWord(req, res, next) {
+  const { word } = req.query;
+  // check if word is provided
+  if (!word) {
+    return res
+      .status(400)
+      .json({ message: "Word query parameter is required." });
+  }
+  try {
+    const result = await commentService.getCommentsByWord(word);
+    return res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   createBulkComments,
   updateCommentById,
   findOrCreateComment,
+  getCommentsByWord,
 };

@@ -1,4 +1,5 @@
 const Comment = require("./comment.model");
+const Sequelize = require("sequelize");
 
 // create bulk comments
 async function createBulkComments(comments) {
@@ -20,9 +21,21 @@ async function findOrCreateComment(postId, userId, content) {
   return await Comment.findOrCreate({ where: { postId, userId, content } });
 }
 
+// retrieve all comments that contain a specific word, and return their count as well
+async function getCommentsByWord(word) {
+  return await Comment.findAndCountAll({
+    where: {
+      content: {
+        [Sequelize.Op.like]: `%${word}%`,
+      },
+    },
+  });
+}
+
 module.exports = {
   createBulkComments,
   updateCommentById,
   getCommentById,
   findOrCreateComment,
+  getCommentsByWord,
 };

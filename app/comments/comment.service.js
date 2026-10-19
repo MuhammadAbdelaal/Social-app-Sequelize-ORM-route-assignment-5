@@ -35,8 +35,21 @@ async function findOrCreateComment(postId, userId, content) {
   return { comment, created };
 }
 
+// get comments by word
+async function getCommentsByWord(word) {
+  const { count, rows } = await commentRepository.getCommentsByWord(word);
+  // if no comments
+  if (!count) {
+    const error = new Error("No comments found.");
+    error.statusCode = 404;
+    throw error;
+  }
+  return { count, comments: rows };
+}
+
 module.exports = {
   createBulkComments,
   updateCommentById,
   findOrCreateComment,
+  getCommentsByWord,
 };
